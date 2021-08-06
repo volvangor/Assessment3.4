@@ -37,8 +37,8 @@ window.addEventListener("resize", onWindowResize, false);
 
 // region GUI setup...
 let menu_params = {
-    space_x: 0,
-    space_z: 0,
+    sky_color: 0,
+    ground_color: 0,
     floor_y: 0,
 };
 
@@ -61,9 +61,30 @@ class ColorGUIHelper {
 const gui = new GUI();
 const viewFolder = gui.addFolder("View");
 viewFolder.add(camera, "fov", 30, 175).onChange(updateCamera);
+viewFolder.addColor(new ColorGUIHelper(sphere.material, "color"), "value");
+viewFolder.addColor(new ColorGUIHelper(sphere.material, "color"), "value");
 viewFolder.open();
 
 // endregion
+
+
+const light = new THREE.HemisphereLight(0xffffbb, 0x080820, 1);
+scene.add(light);
+
+
+let radius = 4;
+let pos = {x: 5, y: radius, z: 0};
+
+let sphere = new THREE.Mesh(new THREE.SphereBufferGeometry(radius, 32, 32),
+    new THREE.MeshPhongMaterial({color: 0x43a1f4, side: THREE.FrontSide}));
+sphere.position.set(pos.x, pos.y, pos.z);
+sphere.castShadow = true;
+sphere.receiveShadow = true;
+scene.add(sphere);
+
+sphere.userData.draggable = true;
+sphere.userData.name = "SPHERE";
+
 
 const animate = function () {
     renderer.render(scene, camera);
