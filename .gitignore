@@ -2,5 +2,4 @@
 /.idea/
 
 # Project exclude paths
-/dist/
 /package-lock.json
